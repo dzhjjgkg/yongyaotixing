@@ -24,13 +24,15 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: 设置 Pages
-        uses: actions/configure-pages@v4
+      - name: 准备部署目录
+        run: |
+          mkdir -p _site
+          cp index.html style.css app.js manifest.json sw.js _site/
 
       - name: 上传构建产物
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
 
       - name: 部署到 GitHub Pages
         id: deployment
