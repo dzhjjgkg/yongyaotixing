@@ -3,13 +3,14 @@
  * 提供离线支持和后台通知
  */
 
-const CACHE_NAME = 'medicine-reminder-v1';
+const CACHE_NAME = 'medicine-reminder-v2';
+const BASE = self.location.pathname.replace(/\/[^/]*$/, '');
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/app.js',
-    '/manifest.json',
+    BASE + '/',
+    BASE + '/index.html',
+    BASE + '/style.css',
+    BASE + '/app.js',
+    BASE + '/manifest.json',
 ];
 
 // 安装事件 - 缓存资源
@@ -92,7 +93,7 @@ self.addEventListener('notificationclick', function (event) {
                 }
             }
             if (clients.openWindow) {
-                return clients.openWindow('/');
+                return clients.openWindow(BASE + '/');
             }
         })
     );
