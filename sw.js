@@ -3,7 +3,7 @@
  * 提供离线支持和后台通知
  */
 
-const CACHE_NAME = 'medicine-reminder-v2';
+const CACHE_NAME = 'medicine-reminder-v3';
 const BASE = self.location.pathname.replace(/\/[^/]*$/, '');
 const ASSETS = [
     BASE + '/',
