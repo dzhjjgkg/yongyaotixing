@@ -87,6 +87,25 @@
             <button class="btn-secondary" id="testReminder">🔔 测试提醒</button>
         </section>
 
+        <!-- 系统日历导入 -->
+        <section class="calendar-section">
+            <h2>📲 后台提醒（推荐）</h2>
+            <p class="calendar-desc">导入手机系统日历后，即使不打开网页也能按时提醒</p>
+            <div class="setting-item">
+                <label for="calendarMonths">📅 生成未来多久的提醒</label>
+                <div class="input-with-unit">
+                    <input type="number" id="calendarMonths" min="1" max="24" value="3">
+                    <span class="unit">个月</span>
+                </div>
+            </div>
+            <button class="btn-calendar" id="downloadCalendar">📥 下载日历文件</button>
+            <div class="calendar-steps">
+                <p><strong>导入步骤：</strong></p>
+                <p>iPhone：下载后用「文件」打开 → 点击文件 → 自动导入日历</p>
+                <p>Android：下载后用「日历」打开 → 选择导入</p>
+            </div>
+        </section>
+
         <!-- 服药记录 -->
         <section class="history-section">
             <h2>📋 服药记录</h2>
@@ -103,9 +122,9 @@
             <div class="info-content">
                 <p>1. 设置药品名称和提醒间隔</p>
                 <p>2. 选择提醒时间（每天检查）</p>
-                <p>3. 选择您喜欢的提醒方式</p>
-                <p>4. 将本页添加到手机主屏幕</p>
-                <p>5. 到时间会自动提醒您吃药</p>
+                <p>3. <strong>点击「下载日历文件」导入手机日历</strong></p>
+                <p>4. 系统日历会在后台自动提醒（无需打开网页）</p>
+                <p>5. 将本页添加到手机主屏幕更方便</p>
             </div>
         </section>
 

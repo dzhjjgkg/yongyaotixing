@@ -30,6 +30,8 @@
         reminderMessage: document.getElementById('reminderMessage'),
         btnTaken: document.getElementById('btnTaken'),
         btnSnooze: document.getElementById('btnSnooze'),
+        calendarMonths: document.getElementById('calendarMonths'),
+        downloadCalendar: document.getElementById('downloadCalendar'),
     };
 
     // ==================== 默认设置 ====================
@@ -106,6 +108,7 @@
         els.clearHistory.addEventListener('click', handleClearHistory);
         els.btnTaken.addEventListener('click', handleTakenFromReminder);
         els.btnSnooze.addEventListener('click', handleSnooze);
+        els.downloadCalendar.addEventListener('click', handleDownloadCalendar);
         els.volumeSlider.addEventListener('input', function () {
             els.volumeValue.textContent = this.value + '%';
         });
@@ -522,6 +525,82 @@
             updateNextReminderDisplay();
             showToast('🗑️ 记录已清空', 'success');
         }
+    }
+
+    // ==================== 系统日历导入 ====================
+    function handleDownloadCalendar() {
+        const medicineName = els.medicineName.value.trim() || '药品';
+        const intervalDays = parseInt(els.intervalDays.value) || 3;
+        const reminderTime = els.reminderTime.value || '08:00';
+        const months = parseInt(els.calendarMonths.value) || 3;
+
+        const icsContent = generateICS(medicineName, intervalDays, reminderTime, months);
+        downloadFile(icsContent, '用药提醒_' + medicineName + '.ics', 'text/calendar');
+        showToast('📥 日历文件已下载，请导入手机日历', 'success');
+    }
+
+    function generateICS(medicineName, intervalDays, reminderTime, months) {
+        const now = new Date();
+        const startDate = new Date();
+        const [hours, minutes] = reminderTime.split(':').map(Number);
+        startDate.setHours(hours, minutes, 0, 0);
+
+        if (startDate <= now) {
+            startDate.setDate(startDate.getDate() + 1);
+        }
+
+        const endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + months);
+
+        const formatICSDate = function (date) {
+            return date.getFullYear() +
+                String(date.getMonth() + 1).padStart(2, '0') +
+                String(date.getDate()).padStart(2, '0') + 'T' +
+                String(date.getHours()).padStart(2, '0') +
+                String(date.getMinutes()).padStart(2, '0') +
+                '00';
+        };
+
+        const nowStamp = formatICSDate(new Date());
+        const dtStart = formatICSDate(startDate);
+        const untilDate = formatICSDate(endDate);
+
+        const ics = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//用药提醒助手//CN',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            'BEGIN:VEVENT',
+            'DTSTART:' + dtStart,
+            'DTEND:' + dtStart,
+            'DTSTAMP:' + nowStamp,
+            'UID:medicine-' + Date.now() + '@yongyaotixing',
+            'SUMMARY:💊 该吃「' + medicineName + '」了',
+            'DESCRIPTION:每' + intervalDays + '天服用一次。\\n\\n请按时服药！',
+            'RRULE:FREQ=DAILY;INTERVAL=' + intervalDays + ';UNTIL=' + untilDate,
+            'BEGIN:VALARM',
+            'TRIGGER:-PT0M',
+            'ACTION:DISPLAY',
+            'DESCRIPTION:💊 该吃「' + medicineName + '」了！',
+            'END:VALARM',
+            'END:VEVENT',
+            'END:VCALENDAR',
+        ].join('\r\n');
+
+        return ics;
+    }
+
+    function downloadFile(content, filename, mimeType) {
+        const blob = new Blob([content], { type: mimeType + ';charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     }
 
     // ==================== 通知权限 ====================
