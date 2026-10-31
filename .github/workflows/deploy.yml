@@ -1,4 +1,4 @@
-name: 部署到 GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -6,34 +6,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
-
-      - name: 准备部署目录
-        run: |
-          mkdir -p _site
-          cp index.html style.css app.js manifest.json sw.js _site/
-
-      - name: 上传构建产物
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-gh-pages@v3
         with:
-          path: '_site'
-
-      - name: 部署到 GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
