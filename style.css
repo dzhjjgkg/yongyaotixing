@@ -1,0 +1,574 @@
+/* ========================================
+   用药提醒助手 - 样式表
+   移动端优先的响应式设计
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #4CAF50;
+    --primary-dark: #388E3C;
+    --primary-light: #C8E6C9;
+    --danger: #f44336;
+    --warning: #FF9800;
+    --bg: #f0f4f0;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --text-lighter: #999999;
+    --border: #e0e0e0;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px calc(20px + var(--safe-bottom));
+    min-height: 100vh;
+}
+
+/* ========== 头部 ========== */
+.app-header {
+    text-align: center;
+    padding: 30px 0 20px;
+}
+
+.header-icon {
+    font-size: 56px;
+    margin-bottom: 8px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.app-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+/* ========== 下次提醒卡片 ========== */
+.next-reminder-card {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(76, 175, 80, 0.3);
+    text-align: center;
+}
+
+.card-header {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.next-time {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.countdown {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-bottom: 6px;
+}
+
+.medicine-name-display {
+    font-size: 13px;
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 12px;
+}
+
+/* ========== 设置区域 ========== */
+.settings-section,
+.history-section,
+.info-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+}
+
+.settings-section h2,
+.history-section h2,
+.info-section h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-item {
+    margin-bottom: 16px;
+}
+
+.setting-item label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="number"],
+.setting-item input[type="time"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    color: var(--text);
+    background: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.setting-item input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-with-unit input {
+    flex: 1;
+}
+
+.input-with-unit .unit {
+    font-size: 16px;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+/* 复选框组 */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 500 !important;
+    font-size: 15px !important;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: #fafafa;
+    border: 2px solid var(--border);
+    transition: all 0.2s;
+}
+
+.checkbox-label:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* 音量滑块 */
+#volumeControl {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#volumeControl label {
+    margin-bottom: 0;
+    min-width: 80px;
+}
+
+#volumeSlider {
+    flex: 1;
+    height: 6px;
+    accent-color: var(--primary);
+}
+
+#volumeValue {
+    font-size: 14px;
+    color: var(--primary-dark);
+    font-weight: 600;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* ========== 日历导入 ========== */
+.calendar-section {
+    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+    border: 2px solid #2196F3;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+}
+
+.calendar-section h2 {
+    font-size: 18px;
+    margin-bottom: 4px;
+    color: #1565C0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.calendar-desc {
+    font-size: 13px;
+    color: #1565C0;
+    margin-bottom: 14px;
+    font-weight: 500;
+}
+
+.btn-calendar {
+    width: 100%;
+    padding: 14px;
+    background: #2196F3;
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    margin-top: 6px;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.btn-calendar:hover {
+    background: #1976D2;
+}
+
+.calendar-steps {
+    margin-top: 14px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-sm);
+}
+
+.calendar-steps p {
+    font-size: 12px;
+    color: #1565C0;
+    line-height: 1.8;
+}
+
+.calendar-steps p strong {
+    font-size: 13px;
+}
+
+/* ========== 按钮 ========== */
+button {
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    margin-top: 6px;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: var(--warning);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.btn-outline {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-outline:hover {
+    background: var(--primary-light);
+}
+
+.btn-danger-outline {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--danger);
+    border: 2px solid var(--danger);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+.btn-danger-outline:hover {
+    background: #ffebee;
+}
+
+/* ========== 服药记录 ========== */
+.history-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: #f9fdf9;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    border-left: 3px solid var(--primary);
+}
+
+.history-item .date {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.history-item .time {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.history-item .medicine {
+    font-size: 12px;
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.empty-hint {
+    text-align: center;
+    color: var(--text-lighter);
+    font-size: 14px;
+    padding: 20px 0;
+}
+
+/* ========== 使用说明 ========== */
+.info-content p {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 2;
+    padding-left: 4px;
+}
+
+/* ========== 页脚 ========== */
+.app-footer {
+    text-align: center;
+    padding: 10px 0;
+    color: var(--text-lighter);
+    font-size: 13px;
+}
+
+/* ========== 提醒弹窗 ========== */
+.reminder-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.reminder-overlay.show {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.reminder-dialog {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.reminder-icon {
+    font-size: 64px;
+    margin-bottom: 12px;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.reminder-dialog h2 {
+    font-size: 22px;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.reminder-dialog p {
+    font-size: 15px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.reminder-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-taken {
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-snooze {
+    padding: 12px;
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+}
+
+/* ========== Toast 提示 ========== */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    z-index: 10000;
+    animation: toastIn 0.3s ease;
+    pointer-events: none;
+}
+
+.toast.success {
+    background: var(--primary);
+}
+
+.toast.error {
+    background: var(--danger);
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+    to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+
+/* ========== 滚动条美化 ========== */
+.history-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+}
+
+/* ========== 响应式微调 ========== */
+@media (min-width: 480px) {
+    .app-container {
+        padding: 24px 20px;
+    }
+}

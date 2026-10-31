@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="用药提醒">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>">
+    <title>用药提醒助手</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="app-header">
+            <div class="header-icon">💊</div>
+            <h1>用药提醒助手</h1>
+            <p class="subtitle">按时吃药，守护健康</p>
+        </header>
+
+        <!-- 下次提醒卡片 -->
+        <section class="next-reminder-card">
+            <div class="card-header">⏰ 下次提醒</div>
+            <div class="next-time" id="nextReminderTime">--</div>
+            <div class="countdown" id="countdown">--</div>
+            <div class="medicine-name-display" id="medicineNameDisplay"></div>
+        </section>
+
+        <!-- 设置区域 -->
+        <section class="settings-section">
+            <h2>⚙️ 提醒设置</h2>
+
+            <!-- 药品名称 -->
+            <div class="setting-item">
+                <label for="medicineName">💊 药品名称</label>
+                <input type="text" id="medicineName" placeholder="例如：维生素片">
+            </div>
+
+            <!-- 间隔天数 -->
+            <div class="setting-item">
+                <label for="intervalDays">📅 每隔几天提醒</label>
+                <div class="input-with-unit">
+                    <input type="number" id="intervalDays" min="1" max="365" value="3">
+                    <span class="unit">天</span>
+                </div>
+            </div>
+
+            <!-- 提醒时间 -->
+            <div class="setting-item">
+                <label for="reminderTime">🕐 每日提醒时间</label>
+                <input type="time" id="reminderTime" value="08:00">
+            </div>
+
+            <!-- 提醒方式 -->
+            <div class="setting-item">
+                <label>🔔 提醒方式（可多选）</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="notifySound" checked>
+                        <span class="checkmark"></span>
+                        🔈 铃声提醒
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="notifyVibrate" checked>
+                        <span class="checkmark"></span>
+                        📳 震动提醒
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="notifyPopup" checked>
+                        <span class="checkmark"></span>
+                        💬 弹窗提醒
+                    </label>
+                </div>
+            </div>
+
+            <!-- 音量控制 -->
+            <div class="setting-item" id="volumeControl">
+                <label for="volumeSlider">🔊 铃声音量</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                <span id="volumeValue">70%</span>
+            </div>
+
+            <button class="btn-primary" id="saveSettings">💾 保存设置</button>
+            <button class="btn-secondary" id="testReminder">🔔 测试提醒</button>
+        </section>
+
+        <!-- 系统日历导入 -->
+        <section class="calendar-section">
+            <h2>📲 后台提醒（推荐）</h2>
+            <p class="calendar-desc">导入手机系统日历后，即使不打开网页也能按时提醒</p>
+            <div class="setting-item">
+                <label for="calendarMonths">📅 生成未来多久的提醒</label>
+                <div class="input-with-unit">
+                    <input type="number" id="calendarMonths" min="1" max="24" value="3">
+                    <span class="unit">个月</span>
+                </div>
+            </div>
+            <button class="btn-calendar" id="downloadCalendar">📥 下载日历文件</button>
+            <div class="calendar-steps">
+                <p><strong>导入步骤：</strong></p>
+                <p>iPhone：下载后用「文件」打开 → 点击文件 → 自动导入日历</p>
+                <p>Android：下载后用「日历」打开 → 选择导入</p>
+            </div>
+        </section>
+
+        <!-- 服药记录 -->
+        <section class="history-section">
+            <h2>📋 服药记录</h2>
+            <div class="history-list" id="historyList">
+                <p class="empty-hint">还没有服药记录</p>
+            </div>
+            <button class="btn-outline" id="markTaken">✅ 标记已服药</button>
+            <button class="btn-danger-outline" id="clearHistory">🗑️ 清空记录</button>
+        </section>
+
+        <!-- 说明 -->
+        <section class="info-section">
+            <h2>📖 使用说明</h2>
+            <div class="info-content">
+                <p>1. 设置药品名称和提醒间隔</p>
+                <p>2. 选择提醒时间（每天检查）</p>
+                <p>3. <strong>点击「下载日历文件」导入手机日历</strong></p>
+                <p>4. 系统日历会在后台自动提醒（无需打开网页）</p>
+                <p>5. 将本页添加到手机主屏幕更方便</p>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <p>记得按时吃药哦 ❤️</p>
+        </footer>
+    </div>
+
+    <!-- 提醒弹窗 -->
+    <div class="reminder-overlay" id="reminderOverlay">
+        <div class="reminder-dialog">
+            <div class="reminder-icon">💊</div>
+            <h2 id="reminderTitle">该吃药啦！</h2>
+            <p id="reminderMessage"></p>
+            <div class="reminder-buttons">
+                <button class="btn-taken" id="btnTaken">✅ 已服药</button>
+                <button class="btn-snooze" id="btnSnooze">⏰ 10分钟后提醒</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
